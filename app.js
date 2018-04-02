@@ -19,7 +19,8 @@ urls.forEach( url =>{
         .init(url)
             .then( r => {
 
-             readPaymentResult(r);
+                console.log(r)
+             //readPaymentResult(r);
 
             })
             .catch( e => console.log( "💀 ", chalk.blue(e) ) );
