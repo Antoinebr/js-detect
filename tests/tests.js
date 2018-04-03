@@ -13,26 +13,22 @@ describe(' Analyze a website ' , function() {
         
         this.timeout(105000);
 
-        const urls = ["redmart.com"];
+        const url = "redmart.com"
         
     
-        urls.forEach( url =>{
-        
-        
-            jsReader
-                .init(url)
-                    .then( r => {
-                        
-                        let script = _.find( r, ['adyen', true ] );
+        jsReader.init(url)
+            .then( r => {
+                
+                let script = _.find( r, ['adyen', true ] );
 
-                        console.log( chalk.grey(script) );
+                console.log( chalk.grey(script) );
 
-                        assert.equal(script.adyen, true);
+                assert.equal(script.adyen, true);
+
+            })
+            .then(done, done)
+        
      
-                    })
-                    .then(done, done)
-        
-        });
         
 
     });
