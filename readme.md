@@ -4,28 +4,37 @@
 
 ```npm install```
 
+
 ```JavaScript 
 
-const url = "redmart.com"
+const chalk = require('chalk');
 
-jsReader.init(url)
-    .then( r => {
-        
-        let script = _.find( r, ['adyen', true ] );
+const _ = require('lodash');
 
-        if( script ) console.log(script)
 
-    })
-    .catch(error => console.error)
+
+let urls = [
+    "redmart.com","marionnaud.fr","alltricks.fr"
+];
+
+
+
+urls.forEach( url =>{
+
+
+    siteReader.init(url)
+        .then( response => {
+            
+            const res = siteReader.readPaymentResult(response);
+            console.log(res);
+        })
+        .catch( e => console.log( "💀 ", chalk.blue(e) ) );
+
+
+});
+
 
 ```
 
 
-### Todo 
 
-* Search signals in CSS files too 
-
-
-### ✅ signals to test
-
-* ```ogonne && ingenico``` : payment provider : https://payment-services.ingenico.com

@@ -10,6 +10,16 @@ const _ = require('lodash');
 
 
 
+
+/**
+ *  init a test
+ * 
+ * @param {string} domain the domain which you cant to explore
+ * 
+ * @returns {Promise<Response>} Will return a promise containing the 
+ * results of the test
+ * 
+ */
 const init = (domain) => {
 
     return new Promise( (resolve, reject) => {  
@@ -24,6 +34,9 @@ const init = (domain) => {
 
             const cssFiles = getCSSfromDocument(body,domain);
 
+           
+            // We push the promises in a promise array
+
             let  proms = []
 
             if( cssFiles ) proms.push( requestsURI( cssFiles) );
@@ -33,6 +46,7 @@ const init = (domain) => {
             proms.push(searchInHTML(body,domain));
 
             proms = _.flatten(proms);
+
 
             Promise
                 .all(proms)
@@ -57,18 +71,22 @@ const init = (domain) => {
 
 
 
+ 
 /**
+ *  Requests URI test and search a what contains
+ *  each url
  * 
- * @param {array} list contains the urls 
- * @returns {promise}
+ * @param {array} list array containing the urls
+ * @param {bool} verbose displays the 
+ * @returns {Promise<Response>} returns an array of promise 
  */
-const requestsURI = (list) => {
+const requestsURI = (list, verbose = false) => {
 
     var promises = [ ];
     
     list = excludeScripts(list);
 
-    list.forEach( s => console.log( chalk.grey( "👉 File detected ", s ) ) );
+    if( verbose ) list.forEach( s => console.log( chalk.grey( "👉 File detected ", s ) ) );
 
     list.forEach( url => promises.push(  requestAndSearch(url) ) );
 
@@ -83,7 +101,11 @@ const requestAndSearch = (url) => {
 
     return new Promise( (resolve, reject) => { 
 
-        request( url , (error, response, body)  => {
+        request({
+            url : url,
+            encoding : 'utf-8'
+
+        }, (error, response, body)  => {
         
             if( typeof response == "undefined" ||  error ) return reject(error);
     
@@ -243,15 +265,44 @@ const searchForFootprint = (body,url) =>{
             hipay: (/hipay/i).test(body),
             payline: (/payline/i).test(body),
             atos: (/atos/).test(body), // css #atosPaymentFrame
+            paybox: (/paybox/).test(body),
         }
 }
 
 
 
+const readPaymentResult = (response, verbose = false)=> {
+
+
+    let results = [];
+
+    const processors = ['adyen' ,'payplug',
+    'stripe', 'braintree', 'laterpay','ogoneIngenico','be2bill','hipay','payline','atos','paybox'];
+
+    processors.forEach( processor => {
+
+        let script = _.find( response, [processor, true ] );
+        
+        if( script ) results.push({url : script.url,found : processor});
+
+        if( verbose ){
+
+            let res = script ? chalk.green(`We found ${processor} in ${script.url}`) : chalk.yellow(`We didn't find ${processor} `);
+
+            console.log(res);
+        }
+       
+    });
+
+
+    return results;
+    
+}
 
 
 module.exports = {
     init : init,
+    readPaymentResult : readPaymentResult,
     test : {
         getCSSfromDocument : getCSSfromDocument
     }

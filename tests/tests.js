@@ -1,5 +1,5 @@
 const assert = require('assert');
-const jsReader = require('../js-reader');
+const siteReader = require('../site-reader');
 const _ = require('lodash');
 const fs = require('fs');
 
@@ -8,7 +8,7 @@ const chalk = require('chalk');
 
 
 
-describe(' Analyze a website ' , function() {
+describe('Tests different websites for payment processors ' , function() {
 
    
     it('should find Adyen in redmart.com files ', function(done) {
@@ -17,7 +17,7 @@ describe(' Analyze a website ' , function() {
 
         const url = "redmart.com"
     
-        jsReader.init(url)
+        siteReader.init(url)
             .then( r => {
                 
                 let script = _.find( r, ['adyen', true ] );
@@ -38,25 +38,7 @@ describe(' Analyze a website ' , function() {
 
         const url = "collectorsquare.com";
     
-        jsReader.init(url)
-            .then( r => {
-                
-                let script = _.find( r, ['ogoneIngenico', true ] );
-
-                assert.equal(script.ogoneIngenico, true);
-
-            })
-            .then(done, done)
-    });
-
-
-    it('should find Ogone in collectorsquare.com HTML ', function(done) {
-        
-        this.timeout(105000);
-
-        const url = "collectorsquare.com";
-    
-        jsReader.init(url)
+        siteReader.init(url)
             .then( r => {
                 
                 let script = _.find( r, ['ogoneIngenico', true ] );
@@ -76,7 +58,7 @@ describe(' Analyze a website ' , function() {
 
         const url = "maliterie.com";
     
-        jsReader.init(url)
+        siteReader.init(url)
             .then( r => {
                 
                 let script = _.find( r, ['be2bill', true ] );
@@ -95,7 +77,7 @@ describe(' Analyze a website ' , function() {
 
         const url = "fr.wikomobile.com ";
     
-        jsReader.init(url)
+        siteReader.init(url)
             .then( r => {
                 
                 let script = _.find( r, ['hipay', true ] );
@@ -114,7 +96,25 @@ describe(' Analyze a website ' , function() {
 
         const url = "www.alltricks.fr";
     
-        jsReader.init(url)
+        siteReader.init(url)
+            .then( r => {
+                
+                let script = _.find( r, ['hipay', true ] );
+
+                assert.equal(script.hipay, true);
+
+            })
+            .then(done, done)
+    });
+
+
+    it('should find hipay in marionnaud.fr', function(done) {
+    
+        this.timeout(105000);
+
+        const url = "marionnaud.fr";
+    
+        siteReader.init(url)
             .then( r => {
                 
                 let script = _.find( r, ['hipay', true ] );
@@ -129,17 +129,40 @@ describe(' Analyze a website ' , function() {
 
 
     it.skip('should find Atos in m.lahalle.com ', function(done) {
-    
+        
+        // issue with char encoding 
+
         this.timeout(105000);
 
         const url = "m.lahalle.com";
     
-        jsReader.init(url)
+        siteReader.init(url)
             .then( r => {
                 
                 let script = _.find( r, ['atos', true ] );
 
                 assert.equal(script.atos, true);
+
+            })
+            .then(done, done)
+    });
+
+
+
+    it.skip('should find paybox in feuvert.fr', function(done) {
+        
+        // issue with Captcha
+
+        this.timeout(105000);
+
+        const url = "www.feuvert.fr";
+    
+        siteReader.init(url)
+            .then( r => {
+                
+                let script = _.find( r, ['paybox', true ] );
+
+                assert.equal(script.paybox, true);
 
             })
             .then(done, done)
@@ -161,7 +184,7 @@ describe('Reading Files' , function() {
 
         let body = fs.readFileSync(process.cwd()+'/tests/assets/index.html');
 
-        const r = jsReader.test.getCSSfromDocument(body,'monbraceletnato.fr');
+        const r = siteReader.test.getCSSfromDocument(body,'monbraceletnato.fr');
 
         assert.equal(r.length, 6);
             
