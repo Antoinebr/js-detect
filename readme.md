@@ -1,15 +1,21 @@
-# JS reader 
+# Site reader 
+
+Search strings for a given domain in CSS / JS / HTML files. 
 
 ### How to use it 
 
 ```npm install```
 
+```npm start````
+
+
 
 ```JavaScript
 
+const siteReader = require('./js-reader.js');
+
 const chalk = require('chalk');
 
-const _ = require('lodash');
 
 let urls = [
     "redmart.com","marionnaud.fr","alltricks.fr"
@@ -29,5 +35,20 @@ urls.forEach( url =>{
 
 ```
 
+
+### Returns 
+
+```JavaScript 
+
+[ { url: 'http://alltricks.fr/js/alltricks.min.js,q1523258679.pagespeed.jm.RIr_8SYCm3.js',
+    found: 'hipay' } ]
+
+[ { url: 'http://marionnaud.fr/_ui/responsive/theme-blue/css/marionnaud.css?v=204-RC1',
+    found: 'hipay' } ]
+    
+[ { url: 'http://redmart.com/js/loader.8e202608.js',
+    found: 'adyen' } ]
+    
+```    
 
 

@@ -1,4 +1,4 @@
-const siteReader = require('./js-reader.js');
+const siteReader = require('./site-reader.js');
 
 const chalk = require('chalk');
 
