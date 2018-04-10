@@ -254,7 +254,7 @@ const searchForFootprint = (body,url) =>{
 
 
     return {
-            adyen : (/adyen\.encrypt/).test(body),
+            adyen : (/(adyen\.encrypt|adyen)/).test(body),
             payplug : (/payplug/i).test(body),
             stripe : (/Stripe\.version/).test(body),
             braintree : (/Braintree\.version/).test(body),
