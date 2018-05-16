@@ -127,8 +127,80 @@ describe('Tests different websites for payment processors ' , function() {
 
 
 
+    it('should find Payone in hawesko.de', function (done){
 
-    it.skip('should find Atos in m.lahalle.com ', function(done) {
+        this.timeout(105000);
+
+        siteReader.init('hawesko.de')
+            .then( r => {
+                    
+                let script = _.find( r, ['payone', true ] );
+
+                assert.equal(script.payone, true);
+
+            })
+            .then(done, done)
+
+    });
+
+
+
+    it('should find Payone in hawesko.de', function (done){
+
+        this.timeout(105000);
+
+        siteReader.init('hawesko.de')
+            .then( r => {
+                    
+                let script = _.find( r, ['payone', true ] );
+
+                assert.equal(script.payone, true);
+
+            })
+            .then(done, done)
+
+    });
+
+
+    it('should find Klarna in getinspired.no', function (done){
+
+        this.timeout(105000);
+
+        siteReader.init('getinspired.no')
+            .then( r => {
+                    
+                let script = _.find( r, ['klarna', true ] );
+
+                assert.equal(script.klarna, true);
+
+            })
+            .then(done, done)
+
+    });
+
+
+
+    it.skip('should find Gestpay in luisaviaroma.com', function (done){
+
+        this.timeout(105000);
+
+        //  I didn't find this file from the home page
+        siteReader.init('luisaviaroma.com')
+            .then( r => {
+                    
+                let script = _.find( r, ['gestpay', true ] );
+
+                assert.equal(script.gestpay, true);
+
+            })
+            .then(done, done)
+
+    });
+
+
+
+
+    it('should find Atos in m.lahalle.com ', function(done) {
         
         // issue with char encoding 
 

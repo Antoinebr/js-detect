@@ -264,8 +264,11 @@ const searchForFootprint = (body,url) =>{
             be2bill: (/be2bill/i).test(body),
             hipay: (/hipay/i).test(body),
             payline: (/payline/i).test(body),
-            atos: (/atos/).test(body), // css #atosPaymentFrame
+            atos: (/\WAtos/i).test(body), // css #atosPaymentFrame
             paybox: (/paybox/).test(body),
+            klarna: (/klarna/i).test(body),
+            payone: (/payone/i).test(body),
+            gestpay: (/gestpay/i).test(body)
         }
 }
 
